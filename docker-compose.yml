@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: ticketing-db
+    image: postgres:latest
+    networks:
+      - ticketing
+    restart: on-failure
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}-ticketing"
+      POSTGRES_USER: "${POSTGRES_USER}-user"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}-ticketing.db"
+      PG_DATA: /var/lib/postgresql/data
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    ports:
+      - ${EXT_PORT}:${INT_PORT}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
+
+#### READ THIS!
+# Docker custom-network works as follows:
+#     1. Everytime 'docker-compose up' is issued, docker creates
+#       a network using the DIRECTORY_NAME where the docker-compose.yml
+#       file is located as network name.
+#       As the current structure is:
+#         - tickets-api
+#           |_docker-compose.yml
+#
+#       The network name of this container will be 'tickets-api_' with an
+#       '_' (underscore) appended as separator for every attached
+#       container.
+#
+#     2. After network creation, every container defined in this
+#       file will join to the network 'tickets-api_' using the specified
+#       network name.
+#           (Of course, that network must be listed as below for docker
+#           to recognize it)
+#       As the current name of the network is 'ticketing', the resulting
+#       network will be: 'ticketing-api_ticketing'
+#     3. Check the output of 'docker network ls' to be sure.
+
+networks:
+  ticketing:
+
+# For more info about docker networking visit: https://docs.docker.com/compose/networking/
