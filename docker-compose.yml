@@ -14,11 +14,27 @@ services:
       PG_DATA: /var/lib/postgresql/data
       POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
     ports:
-      - ${EXT_PORT}:${INT_PORT}
+      - ${EXT_DB_PORT}:${INT_DB_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  api:
+    container_name: ticketing-api
+    image: node:16.0.3-alpine
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
+    networks:
+      ticketing:
+    restart: on-failure
+    ports:
+      - ${EXT_SV_PORT}:${INT_SV_PORT}
 volumes:
-  pgdata: {}
+  pgdata: { }
 
 #### READ THIS!
 # Docker custom-network works as follows:
