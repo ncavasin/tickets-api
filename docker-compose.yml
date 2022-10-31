@@ -8,9 +8,9 @@ services:
       - ticketing
     restart: on-failure
     environment:
-      POSTGRES_DB: "${POSTGRES_DB}-ticketing"
-      POSTGRES_USER: "${POSTGRES_USER}-user"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}-ticketing.db"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PG_DATA: /var/lib/postgresql/data
       POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
     ports:
