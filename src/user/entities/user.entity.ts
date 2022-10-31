@@ -1,7 +1,7 @@
 import { AbstractEntity } from '../../common/abstract.entity';
 import { Column, Entity } from 'typeorm';
 
-@Entity()
+@Entity('user_data')
 export class User extends AbstractEntity {
   get email(): string {
     return this._email;
