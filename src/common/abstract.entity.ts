@@ -1,10 +1,12 @@
 import {
+  BaseEntity,
   CreateDateColumn,
+  Generated,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-export abstract class AbstractEntity {
+export abstract class AbstractEntity extends BaseEntity {
   get id(): string {
     return this._id;
   }
@@ -29,10 +31,11 @@ export abstract class AbstractEntity {
     this._updatedAt = value;
   }
 
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn({ name: 'id' })
+  @Generated('uuid')
   protected _id: string;
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   protected _createdAt: Date;
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   protected _updatedAt: Date;
 }

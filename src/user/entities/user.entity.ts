@@ -1,12 +1,8 @@
 import { AbstractEntity } from '../../common/abstract.entity';
-import { Entity } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
 export class User extends AbstractEntity {
-  constructor(email: string, password: string) {
-    super();
-  }
-
   get email(): string {
     return this._email;
   }
@@ -23,6 +19,8 @@ export class User extends AbstractEntity {
     this._password = value;
   }
 
+  @Column({ length: 255, name: 'email' })
   private _email: string;
+  @Column({ length: 255, name: 'password' })
   private _password: string;
 }
